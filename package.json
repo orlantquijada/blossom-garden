@@ -1,0 +1,31 @@
+{
+  "name": "blossom-garden",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @blossom-garden/web dev",
+    "build": "pnpm -r build",
+    "check": "ultracite check",
+    "convex:dev": "pnpm --filter @blossom-garden/web convex dev",
+    "format": "ultracite fix",
+    "lint": "ultracite check",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "fix": "ultracite fix"
+  },
+  "devDependencies": {
+    "oxc": "^1.0.1",
+    "oxfmt": "latest",
+    "oxlint": "latest",
+    "typescript": "^6.0.2",
+    "ultracite": "7.8.3"
+  },
+  "packageManager": "pnpm@10.19.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss",
+      "unrs-resolver"
+    ]
+  }
+}
