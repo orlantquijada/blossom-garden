@@ -12,16 +12,16 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       oxfmt:
-        specifier: ^0.55.0
+        specifier: latest
         version: 0.55.0
       oxlint:
-        specifier: ^1.70.0
+        specifier: latest
         version: 1.70.0
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
       ultracite:
-        specifier: ^7.8.3
+        specifier: 7.8.3
         version: 7.8.3(oxfmt@0.55.0)(oxlint@1.70.0)
 
   apps/web:
