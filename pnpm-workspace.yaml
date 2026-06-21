@@ -2,7 +2,12 @@ packages:
   - "apps/*"
   - "packages/*"
 
-onlyBuiltDependencies:
-  - esbuild
-  - lightningcss
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  lightningcss: true
+  unrs-resolver: true
+
+autoInstallPeers: true
+minimumReleaseAge: 0
+sharedWorkspaceLockfile: true
+strictPeerDependencies: false
