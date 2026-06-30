@@ -19,3 +19,38 @@ export const create = mutation({
       ...args,
     }),
 });
+
+export const update = mutation({
+  args: {
+    id: v.id("tasks"),
+    status: v.union(v.literal("todo"), v.literal("done")),
+    text: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existingTask = await ctx.db.get(args.id);
+
+    if (!existingTask) {
+      throw new Error("Task not found.");
+    }
+
+    await ctx.db.patch(args.id, {
+      status: args.status,
+      text: args.text,
+    });
+  },
+});
+
+export const remove = mutation({
+  args: {
+    id: v.id("tasks"),
+  },
+  handler: async (ctx, args) => {
+    const existingTask = await ctx.db.get(args.id);
+
+    if (!existingTask) {
+      throw new Error("Task not found.");
+    }
+
+    await ctx.db.delete(args.id);
+  },
+});

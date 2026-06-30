@@ -1,5 +1,9 @@
 node_modules
 .agents
+/.claude
+/AGENTS.md
+/CLAUDE.md
+/convex
 skills-lock.json
 .DS_Store
 .env
