@@ -4,6 +4,7 @@ node_modules
 /AGENTS.md
 /CLAUDE.md
 /convex
+/.vercel
 skills-lock.json
 .DS_Store
 .env

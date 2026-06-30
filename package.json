@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "pnpm --filter @blossom-garden/web dev",
     "build": "pnpm -r build",
+    "vercel-build": "NITRO_PRESET=vercel pnpm --filter @blossom-garden/web build",
     "check": "ultracite check",
     "convex:dev": "pnpm --filter @blossom-garden/web convex dev",
     "format": "ultracite fix",
