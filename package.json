@@ -10,11 +10,17 @@
     "convex:dev": "pnpm --filter @blossom-garden/web convex dev",
     "format": "ultracite fix",
     "lint": "ultracite check",
+    "lint:tanstack": "eslint apps/web/src",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "fix": "ultracite fix"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.101.0",
+    "@tanstack/eslint-plugin-router": "^1.162.0",
+    "@tanstack/eslint-plugin-start": "^0.1.0",
+    "@typescript-eslint/parser": "^8.62.1",
+    "eslint": "^9.39.2",
     "oxc": "^1.0.1",
     "oxfmt": "latest",
     "oxlint": "latest",
