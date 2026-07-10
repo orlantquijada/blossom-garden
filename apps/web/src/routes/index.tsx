@@ -128,18 +128,12 @@ function Home() {
         recognize your VIP status and visit history the moment you walk in.
       </p>
 
-      <div className="mt-11 flex flex-col gap-5 sm:flex-row">
+      <div className="mt-11">
         <Link
           className="rounded-md bg-[#e6a42b] px-9 py-3 font-fraunces text-[#060504] text-base tracking-wide transition-opacity hover:opacity-85"
           to="/signup"
         >
           Join the Membership
-        </Link>
-        <Link
-          className="rounded-md border border-[#e6a42b]/70 px-9 py-3 font-fraunces text-[#e6a42b] text-base tracking-wide transition-colors hover:border-[#e6a42b]"
-          to="/admin"
-        >
-          Admin Portal
         </Link>
       </div>
     </main>
