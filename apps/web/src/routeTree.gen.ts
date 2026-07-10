@@ -9,38 +9,151 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminMembersRouteImport } from './routes/admin.members'
+import { Route as AdminCheckInRouteImport } from './routes/admin.check-in'
+import { Route as AdminMembersIndexRouteImport } from './routes/admin.members.index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AdminMembersMemberIdRouteImport } from './routes/admin.members.$memberId'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMembersRoute = AdminMembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCheckInRoute = AdminCheckInRouteImport.update({
+  id: '/check-in',
+  path: '/check-in',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMembersIndexRoute = AdminMembersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminMembersRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMembersMemberIdRoute = AdminMembersMemberIdRouteImport.update({
+  id: '/$memberId',
+  path: '/$memberId',
+  getParentRoute: () => AdminMembersRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/admin/check-in': typeof AdminCheckInRoute
+  '/admin/members': typeof AdminMembersRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
+  '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/admin/members/': typeof AdminMembersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/signup': typeof SignupRoute
+  '/admin/check-in': typeof AdminCheckInRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/admin/members': typeof AdminMembersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/admin/check-in': typeof AdminCheckInRoute
+  '/admin/members': typeof AdminMembersRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
+  '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/admin/members/': typeof AdminMembersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/signup'
+    | '/admin/check-in'
+    | '/admin/members'
+    | '/admin/'
+    | '/admin/members/$memberId'
+    | '/api/auth/$'
+    | '/admin/members/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/signup'
+    | '/admin/check-in'
+    | '/admin'
+    | '/admin/members/$memberId'
+    | '/api/auth/$'
+    | '/admin/members'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/signup'
+    | '/admin/check-in'
+    | '/admin/members'
+    | '/admin/'
+    | '/admin/members/$memberId'
+    | '/api/auth/$'
+    | '/admin/members/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  SignupRoute: typeof SignupRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +161,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/members': {
+      id: '/admin/members'
+      path: '/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AdminMembersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/check-in': {
+      id: '/admin/check-in'
+      path: '/check-in'
+      fullPath: '/admin/check-in'
+      preLoaderRoute: typeof AdminCheckInRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/members/': {
+      id: '/admin/members/'
+      path: '/'
+      fullPath: '/admin/members/'
+      preLoaderRoute: typeof AdminMembersIndexRouteImport
+      parentRoute: typeof AdminMembersRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/members/$memberId': {
+      id: '/admin/members/$memberId'
+      path: '/$memberId'
+      fullPath: '/admin/members/$memberId'
+      preLoaderRoute: typeof AdminMembersMemberIdRouteImport
+      parentRoute: typeof AdminMembersRoute
+    }
   }
 }
 
+interface AdminMembersRouteChildren {
+  AdminMembersMemberIdRoute: typeof AdminMembersMemberIdRoute
+  AdminMembersIndexRoute: typeof AdminMembersIndexRoute
+}
+
+const AdminMembersRouteChildren: AdminMembersRouteChildren = {
+  AdminMembersMemberIdRoute: AdminMembersMemberIdRoute,
+  AdminMembersIndexRoute: AdminMembersIndexRoute,
+}
+
+const AdminMembersRouteWithChildren = AdminMembersRoute._addFileChildren(
+  AdminMembersRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminCheckInRoute: typeof AdminCheckInRoute
+  AdminMembersRoute: typeof AdminMembersRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCheckInRoute: AdminCheckInRoute,
+  AdminMembersRoute: AdminMembersRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  SignupRoute: SignupRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

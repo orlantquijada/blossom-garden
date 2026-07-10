@@ -6,6 +6,9 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 const config = defineConfig({
+  ssr: {
+    noExternal: ['@convex-dev/better-auth'],
+  },
   plugins: [
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//u] } }),

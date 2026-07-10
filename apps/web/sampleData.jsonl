@@ -1,3 +1,2 @@
-{"text":"Create TanStack Start app","status":"done","createdAt":1797771600000}
-{"text":"Wire Convex backend","status":"done","createdAt":1797858000000}
-{"text":"Plant first garden feature","status":"todo","createdAt":1797944400000}
+{"name":"Aiko Tanaka","email":"aiko@example.com","phone":"+81 90 1234 5678","status":"vip","memberCode":"BGD-DEMO0001","createdAt":1797771600000,"updatedAt":1797771600000}
+{"name":"Ren Sato","email":"ren@example.com","phone":"+81 80 2345 6789","status":"regular","memberCode":"BGD-DEMO0002","createdAt":1797858000000,"updatedAt":1797858000000}

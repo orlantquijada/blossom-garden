@@ -2,11 +2,16 @@ import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
-import { ConvexProvider } from "convex/react";
+import {
+  ConvexBetterAuthProvider,
+  type AuthClient,
+} from '@convex-dev/better-auth/react'
+
+import { authClient } from './lib/auth-client'
 
 import { routeTree } from "./routeTree.gen";
 
-export const getRouter = () => {
+export function getRouter() {
   const convexUrl = import.meta.env.VITE_CONVEX_URL;
 
   if (!convexUrl) {
@@ -15,7 +20,9 @@ export const getRouter = () => {
     );
   }
 
-  const convexQueryClient = new ConvexQueryClient(convexUrl ?? "");
+  const convexQueryClient = new ConvexQueryClient(convexUrl ?? '', {
+    expectAuth: true,
+  });
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -29,9 +36,12 @@ export const getRouter = () => {
 
   const router = createTanStackRouter({
     Wrap: ({ children }) => (
-      <ConvexProvider client={convexQueryClient.convexClient}>
+      <ConvexBetterAuthProvider
+        authClient={authClient as unknown as AuthClient}
+        client={convexQueryClient.convexClient}
+      >
         {children}
-      </ConvexProvider>
+      </ConvexBetterAuthProvider>
     ),
     context: { queryClient },
     defaultPreload: "intent",
@@ -43,7 +53,7 @@ export const getRouter = () => {
   setupRouterSsrQueryIntegration({ queryClient, router });
 
   return router;
-};
+}
 
 declare module "@tanstack/react-router" {
   interface Register {
