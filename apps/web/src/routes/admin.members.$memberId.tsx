@@ -24,8 +24,8 @@ import {
   AdminShell,
   MemberStatusBadge,
   formatDateTime,
-  qrUrl,
 } from '@/lib/admin-ui'
+import { qrUrl } from '@/lib/utils'
 
 import { api } from '../../convex/_generated/api'
 import type { Doc, Id } from '../../convex/_generated/dataModel'

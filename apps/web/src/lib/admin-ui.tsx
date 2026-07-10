@@ -85,7 +85,3 @@ export function formatDateTime(value: number) {
     timeStyle: 'short',
   }).format(value)
 }
-
-export function qrUrl(value: string, size = 180) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(value)}`
-}

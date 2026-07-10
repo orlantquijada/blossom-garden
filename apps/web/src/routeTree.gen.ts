@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as MMemberCodeRouteImport } from './routes/m.$memberCode'
 import { Route as AdminMembersRouteImport } from './routes/admin.members'
 import { Route as AdminCheckInRouteImport } from './routes/admin.check-in'
 import { Route as AdminMembersIndexRouteImport } from './routes/admin.members.index'
@@ -38,6 +39,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const MMemberCodeRoute = MMemberCodeRouteImport.update({
+  id: '/m/$memberCode',
+  path: '/m/$memberCode',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersRoute = AdminMembersRouteImport.update({
   id: '/members',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/admin/check-in': typeof AdminCheckInRoute
   '/admin/members': typeof AdminMembersRouteWithChildren
+  '/m/$memberCode': typeof MMemberCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/signup': typeof SignupRoute
   '/admin/check-in': typeof AdminCheckInRoute
+  '/m/$memberCode': typeof MMemberCodeRoute
   '/admin': typeof AdminIndexRoute
   '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/admin/check-in': typeof AdminCheckInRoute
   '/admin/members': typeof AdminMembersRouteWithChildren
+  '/m/$memberCode': typeof MMemberCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/members/$memberId': typeof AdminMembersMemberIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin/check-in'
     | '/admin/members'
+    | '/m/$memberCode'
     | '/admin/'
     | '/admin/members/$memberId'
     | '/api/auth/$'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/'
     | '/signup'
     | '/admin/check-in'
+    | '/m/$memberCode'
     | '/admin'
     | '/admin/members/$memberId'
     | '/api/auth/$'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin/check-in'
     | '/admin/members'
+    | '/m/$memberCode'
     | '/admin/'
     | '/admin/members/$memberId'
     | '/api/auth/$'
@@ -135,6 +147,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   SignupRoute: typeof SignupRoute
+  MMemberCodeRoute: typeof MMemberCodeRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/m/$memberCode': {
+      id: '/m/$memberCode'
+      path: '/m/$memberCode'
+      fullPath: '/m/$memberCode'
+      preLoaderRoute: typeof MMemberCodeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/members': {
       id: '/admin/members'
@@ -238,6 +258,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   SignupRoute: SignupRoute,
+  MMemberCodeRoute: MMemberCodeRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

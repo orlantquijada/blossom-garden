@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useQuery } from 'convex/react'
 import { Clock, QrCode, UserPlus } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -23,8 +24,46 @@ import {
   MemberStatusBadge,
   formatDateTime,
 } from '@/lib/admin-ui'
+import { qrUrl } from '@/lib/utils'
 
 import { api } from '../../convex/_generated/api'
+
+function SignupPosterCard() {
+  // window is unavailable during SSR; resolve the URL after hydration
+  const [signupUrl, setSignupUrl] = useState('')
+
+  useEffect(() => {
+    setSignupUrl(`${window.location.origin}/signup`)
+  }, [])
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <QrCode className="size-5" />
+          Signup QR
+        </CardTitle>
+        <CardDescription>
+          Print this and put it on tables — customers scan it to join.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="grid justify-items-start gap-3">
+        {signupUrl ? (
+          <>
+            <img
+              alt="QR code linking to the signup page"
+              className="size-40 rounded-md border bg-white p-3"
+              src={qrUrl(signupUrl, 160)}
+            />
+            <p className="font-mono text-muted-foreground text-sm">
+              {signupUrl}
+            </p>
+          </>
+        ) : null}
+      </CardContent>
+    </Card>
+  )
+}
 
 function AdminDashboard() {
   const members = useQuery(api.members.list)
@@ -122,6 +161,7 @@ function AdminDashboard() {
               Manual check-in
             </Link>
           </Button>
+          <SignupPosterCard />
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

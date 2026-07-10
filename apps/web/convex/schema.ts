@@ -12,6 +12,7 @@ export default defineSchema({
     status: v.union(v.literal('regular'), v.literal('vip')),
     updatedAt: v.number(),
   })
+    .index('by_email', ['email'])
     .index('by_memberCode', ['memberCode'])
     .index('by_status', ['status']),
   scanLogs: defineTable({

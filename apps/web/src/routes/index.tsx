@@ -1,39 +1,153 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ArrowRight, UserPlus } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+const GOLD = '#e6a42b'
+
+function Rose({ x, y, r }: { x: number; y: number; r: number }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <circle fill={GOLD} r={r} />
+      <path
+        d={`M0 ${-r * 0.55} a${r * 0.55} ${r * 0.55} 0 1 1 ${-r * 0.55} ${r * 0.55} a${r * 0.3} ${r * 0.3} 0 1 0 ${r * 0.3} ${-r * 0.3}`}
+        fill="none"
+        stroke="#060504"
+        strokeWidth={r * 0.16}
+      />
+    </g>
+  )
+}
+
+function Flower({ x, y, r }: { x: number; y: number; r: number }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      {[0, 72, 144, 216, 288].map((deg) => (
+        <ellipse
+          cy={-r * 0.6}
+          fill={GOLD}
+          key={deg}
+          rx={r * 0.34}
+          ry={r * 0.62}
+          transform={`rotate(${deg})`}
+        />
+      ))}
+      <circle fill="#060504" r={r * 0.22} />
+    </g>
+  )
+}
+
+function Leaf({ x, y, rot }: { x: number; y: number; rot: number }) {
+  return (
+    <ellipse
+      cx={x}
+      cy={y}
+      rx="4"
+      ry="9"
+      stroke={GOLD}
+      strokeWidth="1.2"
+      transform={`rotate(${rot} ${x} ${y})`}
+    />
+  )
+}
+
+function RoseSpray() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-20 w-72 sm:h-24 sm:w-96"
+      fill="none"
+      viewBox="0 0 280 70"
+    >
+      <path d="M140 40 C 105 32, 70 40, 28 26" stroke={GOLD} strokeWidth="1.2" />
+      <path
+        d="M140 40 C 175 32, 210 40, 252 26"
+        stroke={GOLD}
+        strokeWidth="1.2"
+      />
+      <Leaf rot={-40} x={52} y={30} />
+      <Leaf rot={-25} x={82} y={33} />
+      <Leaf rot={-10} x={110} y={36} />
+      <Leaf rot={40} x={228} y={30} />
+      <Leaf rot={25} x={198} y={33} />
+      <Leaf rot={10} x={170} y={36} />
+      <Flower r={11} x={34} y={22} />
+      <Flower r={9} x={246} y={22} />
+      <Rose r={13} x={124} y={26} />
+      <Rose r={16} x={148} y={20} />
+      <Rose r={11} x={138} y={44} />
+      <Rose r={12} x={162} y={40} />
+    </svg>
+  )
+}
+
+function ArchedTitle() {
+  return (
+    <svg
+      aria-label="Blossom Garden"
+      className="w-full max-w-2xl overflow-visible"
+      role="img"
+      viewBox="0 0 560 120"
+    >
+      <path d="M 10 108 Q 280 22 550 108" fill="none" id="title-arc" />
+      <text
+        fill={GOLD}
+        fontFamily="Fraunces, Georgia, serif"
+        fontSize="42"
+        fontWeight="600"
+        letterSpacing="3"
+      >
+        <textPath href="#title-arc" startOffset="50%" textAnchor="middle">
+          BLOSSOM GARDEN
+        </textPath>
+      </text>
+    </svg>
+  )
+}
 
 function Home() {
   return (
-    <main className="min-h-screen bg-background px-4 py-10">
-      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl flex-col justify-center gap-6">
-        <p className="font-medium text-muted-foreground text-sm">
-          Blossom Garden Cafe & Bar
-        </p>
-        <h1 className="font-semibold text-4xl tracking-normal">
-          Public site placeholder
-        </h1>
-        <p className="max-w-xl text-lg text-muted-foreground">
-          Customer-facing marketing and signup are deferred while the admin
-          membership workflow is tested.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild>
-            <Link to="/admin">
-              Open admin
-              <ArrowRight />
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/signup">
-              <UserPlus />
-              Signup placeholder
-            </Link>
-          </Button>
-        </div>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#060504] px-6 py-10 text-center text-[#ede5d4]">
+      <RoseSpray />
+
+      <ArchedTitle />
+
+      <p className="mt-1 font-fraunces text-[#e6a42b] text-lg tracking-[0.45em] sm:text-xl">
+        CAFE &amp; BAR
+      </p>
+
+      <div className="mt-5 flex items-center gap-3 text-[#e6a42b]">
+        <span className="h-px w-10 bg-[#e6a42b]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-[#e6a42b]" />
+        <span className="h-px w-10 bg-[#e6a42b]" />
+      </div>
+
+      <p className="mt-5 text-[#e6a42b]/80 text-sm tracking-[0.15em]">
+        ブロッサムガーデン &middot; カフェ &amp; バー
+      </p>
+
+      <p className="mt-7 max-w-md text-[#ede5d4]/75 text-base leading-relaxed">
+        Scan a QR to join, receive your personal member code, and let our staff
+        recognize your VIP status and visit history the moment you walk in.
+      </p>
+
+      <div className="mt-11 flex flex-col gap-5 sm:flex-row">
+        <Link
+          className="rounded-md bg-[#e6a42b] px-9 py-3 font-fraunces text-[#060504] text-base tracking-wide transition-opacity hover:opacity-85"
+          to="/signup"
+        >
+          Join the Membership
+        </Link>
+        <Link
+          className="rounded-md border border-[#e6a42b]/70 px-9 py-3 font-fraunces text-[#e6a42b] text-base tracking-wide transition-colors hover:border-[#e6a42b]"
+          to="/admin"
+        >
+          Admin Portal
+        </Link>
       </div>
     </main>
   )
 }
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute('/')({
+  component: Home,
+  // html/body stay themed for admin; overscroll behind landing must match its black
+  head: () => ({ styles: [{ children: 'html { background: #060504 }' }] }),
+})

@@ -20,9 +20,10 @@ export function getRouter() {
     );
   }
 
-  const convexQueryClient = new ConvexQueryClient(convexUrl ?? '', {
-    expectAuth: true,
-  });
+  // expectAuth pauses the websocket until a JWT arrives, which deadlocks the
+  // public pages (/signup, /m/*) for anonymous visitors. Auth still attaches
+  // after sign-in; the socket just starts unauthenticated.
+  const convexQueryClient = new ConvexQueryClient(convexUrl ?? '');
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

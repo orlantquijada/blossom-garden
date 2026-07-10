@@ -68,6 +68,74 @@ export const create = mutation({
   },
 })
 
+export const signUp = mutation({
+  args: {
+    email: v.string(),
+    name: v.string(),
+    phone: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const name = args.name.trim()
+    const email = args.email.trim().toLowerCase()
+    const phone = args.phone?.trim() || undefined
+
+    if (!name || !/^\S+@\S+\.\S+$/.test(email)) {
+      throw new Error('A name and valid email are required.')
+    }
+
+    if (name.length > 100 || email.length > 200 || (phone?.length ?? 0) > 40) {
+      throw new Error('Input too long.')
+    }
+
+    const existing = await ctx.db
+      .query('members')
+      .withIndex('by_email', (q) => q.eq('email', email))
+      .first()
+
+    // ponytail: returning the existing code doubles as dedupe and "recover my pass"
+    if (existing) {
+      return { memberCode: existing.memberCode }
+    }
+
+    const now = Date.now()
+    const id = await ctx.db.insert('members', {
+      createdAt: now,
+      email,
+      memberCode: '',
+      name,
+      phone,
+      status: 'regular',
+      updatedAt: now,
+    })
+    const memberCode = makeMemberCode(id)
+    await ctx.db.patch(id, { memberCode })
+
+    return { memberCode }
+  },
+})
+
+// Public: only name/code/status leave the server — never email, phone, or notes.
+export const getCard = query({
+  args: { memberCode: v.string() },
+  handler: async (ctx, args) => {
+    const memberCode = args.memberCode.trim().toUpperCase()
+    const member = await ctx.db
+      .query('members')
+      .withIndex('by_memberCode', (q) => q.eq('memberCode', memberCode))
+      .unique()
+
+    if (!member) {
+      return null
+    }
+
+    return {
+      memberCode: member.memberCode,
+      name: member.name,
+      status: member.status,
+    }
+  },
+})
+
 export const update = mutation({
   args: {
     id: v.id('members'),
