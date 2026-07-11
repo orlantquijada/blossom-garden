@@ -1,96 +1,91 @@
-import {
-  Link,
-  createFileRoute,
-  useNavigate,
-} from '@tanstack/react-router'
-import { useMutation, useQuery } from 'convex/react'
-import { ArrowLeft, Pencil, Save, ScanLine, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery } from "convex/react";
+import { ArrowLeft, Pencil, Save, ScanLine, Trash2, X } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  AdminShell,
-  MemberStatusBadge,
-  formatDateTime,
-} from '@/lib/admin-ui'
-import { qrUrl } from '@/lib/utils'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { AdminShell, MemberStatusBadge, formatDateTime } from "@/lib/admin-ui";
+import { qrUrl } from "@/lib/utils";
 
-import { api } from '../../convex/_generated/api'
-import type { Doc, Id } from '../../convex/_generated/dataModel'
+import { api } from "../../convex/_generated/api";
+import type { Doc, Id } from "../../convex/_generated/dataModel";
 
 function MemberDetailPage() {
-  const { memberId } = Route.useParams()
-  const id = memberId as Id<'members'>
-  const member = useQuery(api.members.get, { id })
-  const scanLogs = useQuery(api.scanLogs.list, { memberId: id }) ?? []
-  const updateMember = useMutation(api.members.update)
-  const deleteMember = useMutation(api.members.remove)
-  const checkIn = useMutation(api.scanLogs.checkIn)
-  const navigate = useNavigate()
-  const [editing, setEditing] = useState(false)
-  const [message, setMessage] = useState('')
+  const { memberId } = Route.useParams();
+  const id = memberId as Id<"members">;
+  const member = useQuery(api.members.get, { id });
+  const scanLogs = useQuery(api.scanLogs.list, { memberId: id }) ?? [];
+  const updateMember = useMutation(api.members.update);
+  const deleteMember = useMutation(api.members.remove);
+  const checkIn = useMutation(api.scanLogs.checkIn);
+  const navigate = useNavigate();
+  const [editing, setEditing] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function handleSave(
     event: FormEvent<HTMLFormElement>,
-    current: Doc<'members'>,
+    current: Doc<"members">
   ) {
-    event.preventDefault()
-    const form = new FormData(event.currentTarget)
-    const name = String(form.get('name') ?? '').trim()
-    const email = String(form.get('email') ?? '').trim()
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") ?? "").trim();
+    const email = String(form.get("email") ?? "").trim();
 
     if (!name || !email) {
-      return
+      return;
     }
 
     await updateMember({
       email,
       id: current._id,
       name,
-      notes: String(form.get('notes') ?? '').trim() || undefined,
-      phone: String(form.get('phone') ?? '').trim() || undefined,
+      notes: String(form.get("notes") ?? "").trim() || undefined,
+      phone: String(form.get("phone") ?? "").trim() || undefined,
       status: current.status,
-    })
-    setEditing(false)
-    setMessage('Member updated.')
+    });
+    setEditing(false);
+    setMessage("Member updated.");
   }
 
-  async function toggleStatus(current: Doc<'members'>) {
+  async function toggleStatus(current: Doc<"members">) {
     await updateMember({
       email: current.email,
       id: current._id,
       name: current.name,
       notes: current.notes,
       phone: current.phone,
-      status: current.status === 'vip' ? 'regular' : 'vip',
-    })
-    setMessage('Status updated.')
+      status: current.status === "vip" ? "regular" : "vip",
+    });
+    setMessage("Status updated.");
   }
 
-  async function handleDelete(current: Doc<'members'>) {
+  async function handleDelete(current: Doc<"members">) {
     if (!window.confirm(`Delete ${current.name}?`)) {
-      return
+      return;
     }
 
-    await deleteMember({ id: current._id })
-    await navigate({ to: '/admin/members' })
+    await deleteMember({ id: current._id });
+    await navigate({ to: "/admin/members" });
   }
 
-  async function handleManualScan(current: Doc<'members'>) {
-    await checkIn({ memberCode: current.memberCode, note: 'Manual admin scan' })
-    setMessage('Check-in logged.')
+  async function handleManualScan(current: Doc<"members">) {
+    await checkIn({
+      memberCode: current.memberCode,
+      note: "Manual admin scan",
+    });
+    setMessage("Check-in logged.");
   }
 
   return (
@@ -204,7 +199,7 @@ function MemberDetailPage() {
                     type="button"
                     variant="outline"
                   >
-                    Mark {member.status === 'vip' ? 'regular' : 'VIP'}
+                    Mark {member.status === "vip" ? "regular" : "VIP"}
                   </Button>
                   <Button
                     onClick={() => handleManualScan(member)}
@@ -224,17 +219,19 @@ function MemberDetailPage() {
                   </Button>
                 </div>
                 {message ? (
-                  <p className="text-emerald-700 text-sm">{message}</p>
+                  <p className="text-sm text-emerald-700">{message}</p>
                 ) : null}
               </form>
             </CardContent>
           </Card>
 
-          <div className="grid gap-6 content-start">
+          <div className="grid content-start gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>Member code</CardTitle>
-                <CardDescription>Use this for manual check-ins.</CardDescription>
+                <CardDescription>
+                  Use this for manual check-ins.
+                </CardDescription>
               </CardHeader>
               <CardContent className="grid justify-items-start gap-4">
                 <Badge className="font-mono text-base" variant="secondary">
@@ -276,9 +273,9 @@ function MemberDetailPage() {
         </div>
       )}
     </AdminShell>
-  )
+  );
 }
 
-export const Route = createFileRoute('/admin/members/$memberId')({
+export const Route = createFileRoute("/admin/members/$memberId")({
   component: MemberDetailPage,
-})
+});

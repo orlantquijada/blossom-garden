@@ -1,54 +1,54 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { useMutation, useQuery } from 'convex/react'
-import { ArrowRight, ScanLine } from 'lucide-react'
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { useMutation, useQuery } from "convex/react";
+import { ArrowRight, ScanLine } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { AdminShell, formatDateTime } from '@/lib/admin-ui'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { AdminShell, formatDateTime } from "@/lib/admin-ui";
 
-import { api } from '../../convex/_generated/api'
-import type { Doc } from '../../convex/_generated/dataModel'
+import { api } from "../../convex/_generated/api";
+import type { Doc } from "../../convex/_generated/dataModel";
 
 function CheckInPage() {
-  const checkIn = useMutation(api.scanLogs.checkIn)
-  const scanLogs = useQuery(api.scanLogs.list, {}) ?? []
-  const [result, setResult] = useState<Doc<'members'> | null>(null)
-  const [error, setError] = useState('')
+  const checkIn = useMutation(api.scanLogs.checkIn);
+  const scanLogs = useQuery(api.scanLogs.list, {}) ?? [];
+  const [result, setResult] = useState<Doc<"members"> | null>(null);
+  const [error, setError] = useState("");
 
   async function handleCheckIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setError('')
-    setResult(null)
+    event.preventDefault();
+    setError("");
+    setResult(null);
 
-    const formElement = event.currentTarget
-    const form = new FormData(formElement)
-    const memberCode = String(form.get('memberCode') ?? '').trim()
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const memberCode = String(form.get("memberCode") ?? "").trim();
 
     if (!memberCode) {
-      return
+      return;
     }
 
     try {
       const member = await checkIn({
         memberCode,
-        note: String(form.get('note') ?? '').trim() || undefined,
-      })
-      setResult(member)
-      formElement.reset()
+        note: String(form.get("note") ?? "").trim() || undefined,
+      });
+      setResult(member);
+      formElement.reset();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Check-in failed.')
+      setError(caught instanceof Error ? caught.message : "Check-in failed.");
     }
   }
 
@@ -85,11 +85,13 @@ function CheckInPage() {
                 <ScanLine />
                 Log check-in
               </Button>
-              {error ? <p className="text-destructive text-sm">{error}</p> : null}
+              {error ? (
+                <p className="text-destructive text-sm">{error}</p>
+              ) : null}
               {result ? (
-                <div className="rounded-md border bg-accent p-3">
+                <div className="bg-accent rounded-md border p-3">
                   <p className="font-medium">Checked in {result.name}</p>
-                  <p className="font-mono text-muted-foreground text-sm">
+                  <p className="text-muted-foreground font-mono text-sm">
                     {result.memberCode}
                   </p>
                   <Button asChild className="mt-3" size="sm" variant="outline">
@@ -135,9 +137,9 @@ function CheckInPage() {
         </Card>
       </div>
     </AdminShell>
-  )
+  );
 }
 
-export const Route = createFileRoute('/admin/check-in')({
+export const Route = createFileRoute("/admin/check-in")({
   component: CheckInPage,
-})
+});

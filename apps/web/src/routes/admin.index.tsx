@@ -1,16 +1,16 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { useQuery } from 'convex/react'
-import { Clock, QrCode, UserPlus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "convex/react";
+import { Clock, QrCode, UserPlus } from "lucide-react";
+import { useSyncExternalStore } from "react";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -18,23 +18,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import {
-  AdminShell,
-  MemberStatusBadge,
-  formatDateTime,
-} from '@/lib/admin-ui'
-import { qrUrl } from '@/lib/utils'
+} from "@/components/ui/table";
+import { AdminShell, MemberStatusBadge, formatDateTime } from "@/lib/admin-ui";
+import { qrUrl } from "@/lib/utils";
 
-import { api } from '../../convex/_generated/api'
+import { api } from "../../convex/_generated/api";
 
 function SignupPosterCard() {
-  // window is unavailable during SSR; resolve the URL after hydration
-  const [signupUrl, setSignupUrl] = useState('')
-
-  useEffect(() => {
-    setSignupUrl(`${window.location.origin}/signup`)
-  }, [])
+  const signupUrl = useSyncExternalStore(
+    () => () => {},
+    () => `${window.location.origin}/signup`,
+    () => ""
+  );
 
   return (
     <Card>
@@ -55,22 +50,24 @@ function SignupPosterCard() {
               className="size-40 rounded-md border bg-white p-3"
               src={qrUrl(signupUrl, 160)}
             />
-            <p className="font-mono text-muted-foreground text-sm">
+            <p className="text-muted-foreground font-mono text-sm">
               {signupUrl}
             </p>
           </>
         ) : null}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function AdminDashboard() {
-  const members = useQuery(api.members.list)
-  const scanLogs = useQuery(api.scanLogs.list, {})
-  const memberRows = members ?? []
-  const scanRows = scanLogs ?? []
-  const vipCount = memberRows.filter((member) => member.status === 'vip').length
+  const members = useQuery(api.members.list);
+  const scanLogs = useQuery(api.scanLogs.list, {});
+  const memberRows = members ?? [];
+  const scanRows = scanLogs ?? [];
+  const vipCount = memberRows.filter(
+    (member) => member.status === "vip"
+  ).length;
 
   return (
     <AdminShell title="Dashboard">
@@ -136,7 +133,7 @@ function AdminDashboard() {
                 {memberRows.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      className="py-8 text-center text-muted-foreground"
+                      className="text-muted-foreground py-8 text-center"
                       colSpan={3}
                     >
                       No members yet.
@@ -148,7 +145,7 @@ function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <div className="grid gap-4 content-start">
+        <div className="grid content-start gap-4">
           <Button asChild size="lg">
             <Link to="/admin/members">
               <UserPlus />
@@ -188,9 +185,9 @@ function AdminDashboard() {
         </div>
       </div>
     </AdminShell>
-  )
+  );
 }
 
-export const Route = createFileRoute('/admin/')({
+export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
-})
+});

@@ -1,0 +1,13 @@
+.agents/
+.claude/
+apps/web/.output/
+apps/web/.vercel/
+apps/web/convex/_generated/
+apps/web/src/routeTree.gen.ts
+dist/
+build/
+coverage/
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
