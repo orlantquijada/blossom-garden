@@ -1,20 +1,20 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { useMutation, useQuery } from 'convex/react'
-import { Search, UserPlus } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { useMutation, useQuery } from "convex/react";
+import { Search, UserPlus } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -22,69 +22,61 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  AdminShell,
-  MemberStatusBadge,
-  formatDateTime,
-} from '@/lib/admin-ui'
-import type { MemberStatus } from '@/lib/admin-ui'
+} from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import { AdminShell, MemberStatusBadge, formatDateTime } from "@/lib/admin-ui";
+import type { MemberStatus } from "@/lib/admin-ui";
 
-import { api } from '../../convex/_generated/api'
+import { api } from "../../convex/_generated/api";
 
 function MembersPage() {
-  const members = useQuery(api.members.list)
-  const createMember = useMutation(api.members.create)
-  const [search, setSearch] = useState('')
-  const [status, setStatus] = useState<MemberStatus>('regular')
-  const [message, setMessage] = useState('')
-  const rows = members ?? []
-  const filteredRows = useMemo(() => {
-    const needle = search.trim().toLowerCase()
+  const members = useQuery(api.members.list);
+  const createMember = useMutation(api.members.create);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<MemberStatus>("regular");
+  const [message, setMessage] = useState("");
+  const rows = members ?? [];
+  const needle = search.trim().toLowerCase();
 
-    if (!needle) {
-      return rows
-    }
-
-    return rows.filter((member) =>
-      [
-        member.name,
-        member.email,
-        member.memberCode,
-        member.phone ?? '',
-        member.status,
-      ]
-        .join(' ')
-        .toLowerCase()
-        .includes(needle),
-    )
-  }, [rows, search])
+  const filteredRows = needle
+    ? rows.filter((member) =>
+        [
+          member.name,
+          member.email,
+          member.memberCode,
+          member.phone ?? "",
+          member.status,
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(needle)
+      )
+    : rows;
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setMessage('')
+    event.preventDefault();
+    setMessage("");
 
-    const formElement = event.currentTarget
-    const form = new FormData(formElement)
-    const name = String(form.get('name') ?? '').trim()
-    const email = String(form.get('email') ?? '').trim()
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const name = String(form.get("name") ?? "").trim();
+    const email = String(form.get("email") ?? "").trim();
 
     if (!name || !email) {
-      return
+      return;
     }
 
     const result = await createMember({
       email,
       name,
-      notes: String(form.get('notes') ?? '').trim() || undefined,
-      phone: String(form.get('phone') ?? '').trim() || undefined,
+      notes: String(form.get("notes") ?? "").trim() || undefined,
+      phone: String(form.get("phone") ?? "").trim() || undefined,
       status,
-    })
+    });
 
-    formElement.reset()
-    setStatus('regular')
-    setMessage(`Created ${result.memberCode}.`)
+    formElement.reset();
+    setStatus("regular");
+    setMessage(`Created ${result.memberCode}.`);
   }
 
   return (
@@ -117,7 +109,7 @@ function MembersPage() {
               <div className="grid gap-2">
                 <Label htmlFor="status">Status</Label>
                 <select
-                  className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  className="border-input focus-visible:border-ring focus-visible:ring-ring/50 h-9 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px]"
                   id="status"
                   onChange={(event) =>
                     setStatus(event.target.value as MemberStatus)
@@ -137,7 +129,7 @@ function MembersPage() {
                 Create member
               </Button>
               {message ? (
-                <p className="text-emerald-700 text-sm">{message}</p>
+                <p className="text-sm text-emerald-700">{message}</p>
               ) : null}
             </form>
           </CardContent>
@@ -153,7 +145,7 @@ function MembersPage() {
                 </CardDescription>
               </div>
               <label className="relative w-full md:w-80">
-                <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
+                <Search className="text-muted-foreground absolute top-2.5 left-3 size-4" />
                 <Input
                   className="pl-9"
                   onChange={(event) => setSearch(event.target.value)}
@@ -209,7 +201,7 @@ function MembersPage() {
                 {filteredRows.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      className="py-10 text-center text-muted-foreground"
+                      className="text-muted-foreground py-10 text-center"
                       colSpan={5}
                     >
                       No members found.
@@ -222,9 +214,9 @@ function MembersPage() {
         </Card>
       </div>
     </AdminShell>
-  )
+  );
 }
 
-export const Route = createFileRoute('/admin/members/')({
+export const Route = createFileRoute("/admin/members/")({
   component: MembersPage,
-})
+});

@@ -1,9 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap");
+
+/* prettier-ignore */
+@import "tailwindcss";
+
+/* prettier-ignore */
+@import "tw-animate-css";
 
 @theme {
-  --font-fraunces: 'Fraunces', Georgia, serif;
+  --font-fraunces: "Fraunces", georgia, serif;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -35,29 +39,29 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.985 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.94 0.012 86);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.94 0 0);
-  --muted-foreground: oklch(0.43 0 0);
-  --accent: oklch(0.92 0.026 152);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.875 0 0);
-  --input: oklch(0.875 0 0);
-  --ring: oklch(0.58 0 0);
+  --background: oklch(98.5% 0 0deg);
+  --foreground: oklch(14.5% 0 0deg);
+  --card: oklch(100% 0 0deg);
+  --card-foreground: oklch(14.5% 0 0deg);
+  --popover: oklch(100% 0 0deg);
+  --popover-foreground: oklch(14.5% 0 0deg);
+  --primary: oklch(20.5% 0 0deg);
+  --primary-foreground: oklch(98.5% 0 0deg);
+  --secondary: oklch(94% 0.012 86deg);
+  --secondary-foreground: oklch(20.5% 0 0deg);
+  --muted: oklch(94% 0 0deg);
+  --muted-foreground: oklch(43% 0 0deg);
+  --accent: oklch(92% 0.026 152deg);
+  --accent-foreground: oklch(20.5% 0 0deg);
+  --destructive: oklch(57.7% 0.245 27.325deg);
+  --border: oklch(87.5% 0 0deg);
+  --input: oklch(87.5% 0 0deg);
+  --ring: oklch(58% 0 0deg);
 }
 
 * {
-  border-color: var(--border);
   box-sizing: border-box;
+  border-color: var(--border);
 }
 
 html,
@@ -67,6 +71,7 @@ body,
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family:
@@ -75,9 +80,8 @@ body {
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    'Segoe UI',
+    "Segoe UI",
     sans-serif;
-  margin: 0;
 }
 
 a,

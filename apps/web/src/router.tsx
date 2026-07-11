@@ -5,9 +5,9 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import {
   ConvexBetterAuthProvider,
   type AuthClient,
-} from '@convex-dev/better-auth/react'
+} from "@convex-dev/better-auth/react";
 
-import { authClient } from './lib/auth-client'
+import { authClient } from "./lib/auth-client";
 
 import { routeTree } from "./routeTree.gen";
 
@@ -23,7 +23,7 @@ export function getRouter() {
   // expectAuth pauses the websocket until a JWT arrives, which deadlocks the
   // public pages (/signup, /m/*) for anonymous visitors. Auth still attaches
   // after sign-in; the socket just starts unauthenticated.
-  const convexQueryClient = new ConvexQueryClient(convexUrl ?? '');
+  const convexQueryClient = new ConvexQueryClient(convexUrl ?? "");
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

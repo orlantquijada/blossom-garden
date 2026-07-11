@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 
 const config = defineConfig({
   ssr: {
-    noExternal: ['@convex-dev/better-auth'],
+    noExternal: ["@convex-dev/better-auth"],
   },
   plugins: [
     devtools(),
