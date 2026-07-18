@@ -92,13 +92,16 @@ export const checkInSelf = mutation({
   },
 });
 
-export const checkedInRecently = query({
+// Returns the timestamp until which the member counts as checked in (or null).
+// The client compares against a ticking clock; a boolean here would go stale
+// because Convex only re-runs queries on data changes, not time passage.
+export const checkedInUntil = query({
   args: {},
   handler: async (ctx) => {
     const email = (await ctx.auth.getUserIdentity())?.email?.toLowerCase();
 
     if (!email) {
-      return false;
+      return null;
     }
 
     const member = await ctx.db
@@ -107,7 +110,7 @@ export const checkedInRecently = query({
       .first();
 
     if (!member) {
-      return false;
+      return null;
     }
 
     const [latest] = await ctx.db
@@ -116,9 +119,7 @@ export const checkedInRecently = query({
       .order("desc")
       .take(1);
 
-    return (
-      !!latest && Date.now() - latest.scannedAt < SELF_CHECK_IN_COOLDOWN_MS
-    );
+    return latest ? latest.scannedAt + SELF_CHECK_IN_COOLDOWN_MS : null;
   },
 });
 

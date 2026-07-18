@@ -61,6 +61,14 @@ function SignupPage() {
     const name = String(form.get("name") ?? "").trim();
 
     try {
+      // Member row first: it dedupes by email, so re-signing up recovers the
+      // existing pass. Auth comes after and never blocks seeing the pass.
+      const { memberCode } = await signUp({
+        email,
+        name,
+        phone: String(form.get("phone") ?? "").trim() || undefined,
+      });
+
       const auth = await authClient.signUp.email({
         email,
         name,
@@ -68,17 +76,17 @@ function SignupPage() {
       });
 
       if (auth.error) {
-        throw new Error(auth.error.message ?? "Account creation failed.");
+        // Account already exists (returning member) — sign back in so
+        // self check-in works. Failure here still shows the pass.
+        await authClient.signIn.email({
+          email,
+          password: initialMemberCredential,
+        });
       }
 
-      const { memberCode } = await signUp({
-        email,
-        name,
-        phone: String(form.get("phone") ?? "").trim() || undefined,
-      });
       await navigate({ params: { memberCode }, to: "/m/$memberCode" });
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : t("signupFailed"));
+    } catch {
+      setError(t("signupFailed"));
       setSubmitting(false);
     }
   }

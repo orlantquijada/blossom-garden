@@ -16,10 +16,19 @@ const checkInButtonClass =
 function CheckInButton({ isOwnCard }: { readonly isOwnCard: boolean }) {
   const { t } = useTranslation();
   const checkInSelf = useMutation(api.scanLogs.checkInSelf);
-  const checkedInRecently = useQuery(api.scanLogs.checkedInRecently) ?? false;
+  const checkedInUntil = useQuery(api.scanLogs.checkedInUntil) ?? null;
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
   const [toast, setToast] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+  const checkedInRecently = !!checkedInUntil && now < checkedInUntil;
+
+  // Ticking clock so the "checked in" chip expires without a reload.
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60_000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (!toast) {
