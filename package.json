@@ -11,6 +11,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "ultracite check apps/web/src",
+    "lint:css": "stylelint 'apps/web/src/**/*.css'",
     "lint:tanstack": "eslint apps/web/src",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",

@@ -48,7 +48,7 @@ function SignupPosterCard() {
             <img
               alt="QR code linking to the signup page"
               className="size-40 rounded-md border bg-white p-3"
-              src={qrUrl(signupUrl, 160)}
+              src={qrUrl(signupUrl)}
             />
             <p className="text-muted-foreground font-mono text-sm">
               {signupUrl}

@@ -128,11 +128,39 @@ export const getCard = query({
       return null;
     }
 
+    // ponytail: full collect to count; switch to a counter field if logs grow large
+    const visits = (
+      await ctx.db
+        .query("scanLogs")
+        .withIndex("by_memberId", (q) => q.eq("memberId", member._id))
+        .collect()
+    ).length;
+
     return {
+      createdAt: member.createdAt,
       memberCode: member.memberCode,
       name: member.name,
       status: member.status,
+      visits,
     };
+  },
+});
+
+export const getMyCard = query({
+  args: {},
+  handler: async (ctx) => {
+    const email = (await ctx.auth.getUserIdentity())?.email?.toLowerCase();
+
+    if (!email) {
+      return null;
+    }
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_email", (q) => q.eq("email", email))
+      .first();
+
+    return member ? { memberCode: member.memberCode } : null;
   },
 });
 

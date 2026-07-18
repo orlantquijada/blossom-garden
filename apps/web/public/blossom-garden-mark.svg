@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Blossom Garden</title>
+  <rect width="128" height="128" rx="24" fill="#080705"/>
+  <text x="64" y="59" fill="#E6A42B" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="31" font-weight="700" letter-spacing="-1.5" text-anchor="middle">Blossom</text>
+  <text x="64" y="87" fill="#E6A42B" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="31" font-weight="700" letter-spacing="-1.5" text-anchor="middle">Garden</text>
+</svg>

@@ -7,7 +7,9 @@ if (convexSiteUrl === undefined || convexUrl === undefined) {
   throw new Error("VITE_CONVEX_SITE_URL and VITE_CONVEX_URL are required.");
 }
 
-export const { getToken, handler } = convexBetterAuthReactStart({
-  convexSiteUrl,
-  convexUrl,
-});
+export const { fetchAuthQuery, getToken, handler } = convexBetterAuthReactStart(
+  {
+    convexSiteUrl,
+    convexUrl,
+  }
+);

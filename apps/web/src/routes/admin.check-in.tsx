@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery } from "convex/react";
-import { ArrowRight, ScanLine } from "lucide-react";
+import { ArrowRight, ScanLine, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
 
@@ -23,6 +23,7 @@ import type { Doc } from "../../convex/_generated/dataModel";
 
 function CheckInPage() {
   const checkIn = useMutation(api.scanLogs.checkIn);
+  const removeScan = useMutation(api.scanLogs.remove);
   const scanLogs = useQuery(api.scanLogs.list, {}) ?? [];
   const [result, setResult] = useState<Doc<"members"> | null>(null);
   const [error, setError] = useState("");
@@ -120,12 +121,27 @@ function CheckInPage() {
                 className="flex flex-col gap-1 border-b pb-3 last:border-0 sm:flex-row sm:items-center sm:justify-between"
                 key={scan._id}
               >
-                <Badge className="font-mono" variant="secondary">
-                  {scan.memberCode}
-                </Badge>
-                <p className="text-muted-foreground text-sm">
-                  {formatDateTime(scan.scannedAt)}
-                </p>
+                <div className="flex items-center gap-2">
+                  <Badge className="font-mono" variant="secondary">
+                    {scan.memberCode}
+                  </Badge>
+                  {scan.source === "self" ? (
+                    <Badge variant="outline">self</Badge>
+                  ) : null}
+                </div>
+                <div className="flex items-center gap-1">
+                  <p className="text-muted-foreground text-sm">
+                    {formatDateTime(scan.scannedAt)}
+                  </p>
+                  <Button
+                    aria-label={`Delete check-in ${scan.memberCode}`}
+                    onClick={() => removeScan({ id: scan._id })}
+                    size="icon-xs"
+                    variant="ghost"
+                  >
+                    <Trash2 />
+                  </Button>
+                </div>
               </div>
             ))}
             {scanLogs.length === 0 ? (

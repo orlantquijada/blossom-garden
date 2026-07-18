@@ -240,7 +240,7 @@ function MemberDetailPage() {
                 <img
                   alt={`QR code for ${member.memberCode}`}
                   className="size-44 rounded-md border bg-white p-3"
-                  src={qrUrl(member.memberCode, 176)}
+                  src={qrUrl(member.memberCode)}
                 />
               </CardContent>
             </Card>
