@@ -135,7 +135,15 @@ function CheckInPage() {
                   </p>
                   <Button
                     aria-label={`Delete check-in ${scan.memberCode}`}
-                    onClick={() => removeScan({ id: scan._id })}
+                    onClick={() => {
+                      if (
+                        window.confirm(`Delete check-in ${scan.memberCode}?`)
+                      ) {
+                        removeScan({ id: scan._id }).catch(() =>
+                          setError("Delete failed.")
+                        );
+                      }
+                    }}
                     size="icon-xs"
                     variant="ghost"
                   >

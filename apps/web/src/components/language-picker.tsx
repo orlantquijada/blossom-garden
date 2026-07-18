@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -11,14 +12,30 @@ import {
 import { i18n, languages } from "@/lib/i18n";
 import type { LanguageCode } from "@/lib/i18n";
 
+const STORAGE_KEY = "bg-lang";
+
 function changeLanguage(code: LanguageCode) {
   document.documentElement.lang = code;
+  localStorage.setItem(STORAGE_KEY, code);
   void i18n.changeLanguage(code);
 }
 
 export function LanguagePicker() {
   const { t } = useTranslation();
   const language = (i18n.resolvedLanguage ?? "en") as LanguageCode;
+
+  // Applied post-hydration so SSR markup (always English) matches first paint.
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
+
+    if (
+      stored &&
+      stored !== i18n.resolvedLanguage &&
+      languages.some((option) => option.code === stored)
+    ) {
+      changeLanguage(stored);
+    }
+  }, []);
   const currentLanguage =
     languages.find((option) => option.code === language) ?? languages[0];
 
