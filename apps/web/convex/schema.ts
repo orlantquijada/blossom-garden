@@ -20,5 +20,6 @@ export default defineSchema({
     memberId: v.id("members"),
     note: v.optional(v.string()),
     scannedAt: v.number(),
+    source: v.optional(v.union(v.literal("self"), v.literal("staff"))),
   }).index("by_memberId", ["memberId"]),
 });

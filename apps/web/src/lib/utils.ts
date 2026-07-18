@@ -1,9 +1,13 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { renderSVG } from "uqr";
 import type { ClassValue } from "clsx";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export function qrUrl(value: string, size = 180) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(value)}`;
+// Rendered locally so member codes never leave the app; callers size via CSS.
+export function qrUrl(value: string) {
+  const svg = renderSVG(value, { border: 0, whiteColor: "transparent" });
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }

@@ -44,6 +44,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     head: () => ({
       links: [
         {
+          href: "/blossom-garden-mark.svg",
+          rel: "icon",
+          type: "image/svg+xml",
+        },
+        {
+          href: "/logo192.png",
+          rel: "apple-touch-icon",
+        },
+        {
+          href: "/manifest.json",
+          rel: "manifest",
+        },
+        {
           href: appCss,
           rel: "stylesheet",
         },
